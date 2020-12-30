@@ -245,7 +245,7 @@ alter_trigger
     ;
 
 create_trigger
-    : CREATE ( OR REPLACE )? EDITIONABLE? TRIGGER trigger_name
+    : CREATE ( OR REPLACE )? ebr_editionable? TRIGGER trigger_name
       (simple_dml_trigger | compound_dml_trigger | non_dml_trigger)
       trigger_follows_clause? (ENABLE | DISABLE)? trigger_when_clause? trigger_body ';'
     ;
@@ -1262,12 +1262,12 @@ directory_path
 alter_library
     : ALTER LIBRARY library_name
        ( COMPILE library_debug? compiler_parameters_clause* (REUSE SETTINGS)?
-       | library_editionable
+       | ebr_editionable
        )
      ';'
     ;
 
-library_editionable
+ebr_editionable
     : {isVersion12()}? (EDITIONABLE | NONEDITIONABLE)
     ;
 
@@ -1300,13 +1300,9 @@ alter_view
               )
        | COMPILE
        | READ (ONLY | WRITE)
-       | alter_view_editionable?
+       | ebr_editionable?
        )
       ';'
-    ;
-
-alter_view_editionable
-    : {isVersion12()}? (EDITIONABLE | NONEDITIONABLE)
     ;
 
 create_view
