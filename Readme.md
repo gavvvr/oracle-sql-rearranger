@@ -6,6 +6,21 @@ The purpose of this tool is to take Oracle schema export
 and rearrange/group statements 
 for better visibility and easier comparison.
 
+Usage
+---
+
+The app expects single argument (path to an input file) 
+and produces resulting file with the same name + `_sorted` suffix.
+
+There are several options to start using the app:
+
+- 🐳 if you have Docker installed, `cd` to the directory containing target input file 
+  and execute ``docker run --rm -v`pwd`:`pwd` -w`pwd` gavvvr/oracle-sql-rearranger $IN_FILE.sql``
+- ☕️ If you have Java 11+ installed on your machine, you can run the app with `java -jar oracle-sql-rearranger.jar`. 
+  The `jar` file can be obtained:
+  - ⬇️ either by downloading it from [releases](https://github.com/gavvvr/oracle-sql-rearranger/releases) page
+  - 👨‍💻 or by building it on your own with `mvn package -DskipTests` and locating the artifact in `target` folder
+
 Supported statements
 ---
 
