@@ -3,8 +3,8 @@ Oracle SQL rearranger
 
 The purpose of this tool is to take Oracle schema export 
 (usually produced with Oracle SQL developer)
-and rearrange/group statements 
-for better visibility and easier comparison.
+and rearrange/group statements in deterministic order 
+for better visibility and easier side-by-side comparison.
 
 Usage
 ---
