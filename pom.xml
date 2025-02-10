@@ -8,7 +8,6 @@
   <version>0.1-SNAPSHOT</version>
 
   <properties>
-    <java.version>11</java.version>
     <antlr.version>4.9</antlr.version>
     <junit.version>5.7.0</junit.version>
 
@@ -25,8 +24,7 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.8.1</version>
         <configuration>
-          <source>${java.version}</source>
-          <target>${java.version}</target>
+          <release>${java.specification.version}</release>
         </configuration>
       </plugin>
       <plugin>
