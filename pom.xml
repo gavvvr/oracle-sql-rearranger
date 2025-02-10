@@ -8,8 +8,8 @@
   <version>0.1-SNAPSHOT</version>
 
   <properties>
-    <antlr.version>4.9</antlr.version>
-    <junit.version>5.7.0</junit.version>
+    <antlr.version>4.13.2</antlr.version>
+    <junit.version>5.11.4</junit.version>
 
     <app.main.class>kg.Main</app.main.class>
 
@@ -22,7 +22,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.1</version>
+        <version>3.13.0</version>
         <configuration>
           <release>${java.specification.version}</release>
         </configuration>
@@ -30,7 +30,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
-        <version>3.2.4</version>
+        <version>3.6.0</version>
         <executions>
           <execution>
             <phase>package</phase>
@@ -59,7 +59,7 @@
       </plugin>
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.22.2</version>
+        <version>3.5.2</version>
       </plugin>
 
       <plugin>
