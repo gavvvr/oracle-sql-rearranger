@@ -1,5 +1,0 @@
-language: java
-jdk:
-  - openjdk11
-  - openjdk14
-script: mvn -B verify
