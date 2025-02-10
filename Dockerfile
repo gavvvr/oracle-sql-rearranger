@@ -16,7 +16,8 @@ ARG BUILD_DIR
 WORKDIR $BUILD_DIR
 
 COPY --from=jar_builder $BUILD_DIR/target/$JAR_NAME $BUILD_DIR/src.jar
-RUN native-image --static --libc=musl -jar src.jar -o native_binary_out
+RUN native-image -Os --static --libc=musl -jar src.jar -o native_binary_out
+RUN ls -al # size check
 #
 FROM scratch
 ARG BUILD_DIR
