@@ -11,11 +11,10 @@ COPY . .
 RUN $M2_HOME/bin/mvn --batch-mode clean package
 # Build native image
 FROM ghcr.io/graalvm/native-image-community:${JAVA_VERSION}-muslib AS native_image_builder
-ARG JAR_NAME=oracle-sql-rearranger*.jar
 ARG BUILD_DIR
 WORKDIR $BUILD_DIR
 
-COPY --from=jar_builder $BUILD_DIR/target/$JAR_NAME $BUILD_DIR/src.jar
+COPY --from=jar_builder $BUILD_DIR/target/oracle-sql-rearranger*.jar $BUILD_DIR/src.jar
 RUN native-image -Os --static --libc=musl -jar src.jar -o native_binary_out
 RUN ls -al # size check
 #
