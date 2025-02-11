@@ -10,7 +10,7 @@ WORKDIR $BUILD_DIR
 COPY . .
 RUN $M2_HOME/bin/mvn --batch-mode clean package
 # Build native image
-FROM ghcr.io/graalvm/native-image-community:${JAVA_VERSION} AS native_image_builder
+FROM ghcr.io/graalvm/native-image-community:${JAVA_VERSION}-muslib AS native_image_builder
 ARG BUILD_DIR
 WORKDIR $BUILD_DIR
 
