@@ -23,8 +23,9 @@ RUN microdnf -y install wget xz && \
     mv upx-${UPX_VERSION}-amd64_linux/upx . && \
     rm -rf upx-${UPX_VERSION}-amd64_linux
 
-COPY --from=jar_builder $BUILD_DIR/target/oracle-sql-rearranger*with-dependencies.jar $BUILD_DIR/src.jar
-RUN native-image -Os -m kg -jar src.jar -o native_binary_out
+COPY --from=jar_builder $BUILD_DIR/target/oracle-sql-rearranger.jar $BUILD_DIR/
+COPY --from=jar_builder $BUILD_DIR/target/lib/ $BUILD_DIR/lib/
+RUN native-image -Os--module-path lib:oracle-sql-rearranger.jar --module kg/kg.Main -o native_binary_out
 RUN ls -al # size check
 RUN ./native_binary_out || true # test if runnable
 

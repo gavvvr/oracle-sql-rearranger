@@ -18,6 +18,7 @@
   </properties>
 
   <build>
+    <finalName>oracle-sql-rearranger</finalName>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -27,34 +28,6 @@
           <release>${java.specification.version}</release>
         </configuration>
       </plugin>
-      <plugin>
-        <artifactId>maven-assembly-plugin</artifactId>
-        <version>3.7.1</version>
-        <executions>
-          <execution>
-            <id>create-jar</id>
-            <phase>package</phase>
-            <goals>
-              <goal>single</goal>
-            </goals>
-            <configuration>
-              <archive>
-                <manifest>
-                  <mainClass>kg.Main</mainClass>
-                </manifest>
-              </archive>
-              <descriptorRefs>
-                <descriptorRef>jar-with-dependencies</descriptorRef>
-              </descriptorRefs>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.5.2</version>
-      </plugin>
-
       <plugin>
         <groupId>org.antlr</groupId>
         <artifactId>antlr4-maven-plugin</artifactId>
@@ -71,6 +44,69 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.5.2</version>
+      </plugin>
+
+
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>3.8.1</version>
+        <executions>
+          <execution>
+            <id>copy-dependencies</id>
+            <phase>package</phase>
+            <goals>
+              <goal>copy-dependencies</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/lib</outputDirectory>
+              <includeScope>runtime</includeScope>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+<!--      <plugin>-->
+<!--        <groupId>org.codehaus.mojo</groupId>-->
+<!--        <artifactId>exec-maven-plugin</artifactId>-->
+<!--        <version>3.5.0</version>-->
+<!--        <executions>-->
+<!--          <execution>-->
+<!--            <id>jpackage</id>-->
+<!--            <phase>package</phase>-->
+<!--            <goals>-->
+<!--              <goal>exec</goal>-->
+<!--            </goals>-->
+<!--            <configuration>-->
+<!--              <executable>jpackage</executable>-->
+<!--              <arguments>-->
+<!--                <argument>&#45;&#45;type</argument>-->
+<!--                <argument>app-image</argument>  &lt;!&ndash; Use 'dmg' for macOS, 'msi' for Windows, 'deb' for Linux &ndash;&gt;-->
+<!--                <argument>&#45;&#45;name</argument>-->
+<!--                <argument>oracle-sql-rearranger</argument>-->
+<!--                <argument>&#45;&#45;input</argument>-->
+<!--                <argument>${project.build.directory}</argument>-->
+<!--                <argument>&#45;&#45;main-jar</argument>-->
+<!--                <argument>oracle-sql-rearranger.jar</argument>-->
+<!--                <argument>&#45;&#45;main-class</argument>-->
+<!--                <argument>${app.main.class}</argument>-->
+<!--&lt;!&ndash;                <argument>&#45;&#45;module</argument>&ndash;&gt;-->
+<!--&lt;!&ndash;                <argument>kg/${app.main.class}</argument>&ndash;&gt;-->
+<!--                <argument>&#45;&#45;runtime-image</argument>-->
+<!--                <argument>${project.build.directory}/lib</argument>-->
+<!--                <argument>&#45;&#45;dest</argument>-->
+<!--                <argument>${project.build.directory}/package</argument>-->
+<!--                <argument>&#45;&#45;verbose</argument>-->
+<!--              </arguments>-->
+<!--            </configuration>-->
+<!--          </execution>-->
+<!--        </executions>-->
+<!--      </plugin>-->
+
     </plugins>
   </build>
 
