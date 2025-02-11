@@ -39,13 +39,13 @@ ARG BUILD_DIR
 WORKDIR $BUILD_DIR
 
 ARG UPX_VERSION=4.2.4
-ARG UPX_ARCHIVE=upx-${UPX_VERSION}-amd64_linux.tar.xz
+ARG UPX_ARCHIVE=upx-${UPX_VERSION}-arm64_linux.tar.xz
 RUN microdnf -y install wget xz && \
     wget -q https://github.com/upx/upx/releases/download/v${UPX_VERSION}/${UPX_ARCHIVE} && \
     tar -xJf ${UPX_ARCHIVE} && \
     rm -rf ${UPX_ARCHIVE} && \
-    mv upx-${UPX_VERSION}-amd64_linux/upx . && \
-    rm -rf upx-${UPX_VERSION}-amd64_linux
+    mv upx-${UPX_VERSION}-arm64_linux/upx . && \
+    rm -rf upx-${UPX_VERSION}-arm64_linux
 
 COPY --from=jar_builder $BUILD_DIR/target/oracle-sql-rearranger.jar $BUILD_DIR/
 COPY --from=jar_builder $BUILD_DIR/target/lib/ $BUILD_DIR/lib/
