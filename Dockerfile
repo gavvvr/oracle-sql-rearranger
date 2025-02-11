@@ -10,9 +10,25 @@ WORKDIR $BUILD_DIR
 COPY . .
 RUN $M2_HOME/bin/mvn --batch-mode clean package
 # Build native image
-FROM ghcr.io/graalvm/native-image-community:${JAVA_VERSION}-muslib AS native_image_builder
+FROM ghcr.io/graalvm/native-image-community:${JAVA_VERSION} AS native_image_builder
 ARG BUILD_DIR
 WORKDIR $BUILD_DIR
+
+ARG MUSL_LOCATION=https://more.musl.cc/10/x86_64-linux-musl
+ARG ZLIB_LOCATION=https://zlib.net/fossils/zlib-1.2.11.tar.gz
+ARG MUSL_NAME=armv7r-linux-musleabihf-native.tgz
+ENV TOOLCHAIN_DIR=/usr/local/musl \
+    CC=$TOOLCHAIN_DIR/bin/gcc
+
+RUN mkdir -p $TOOLCHAIN_DIR \
+    && microdnf install -y wget tar gzip make \
+    && wget $MUSL_LOCATION/$MUSL_NAME && tar -xvf $MUSL_NAME -C $TOOLCHAIN_DIR --strip-components=1  \
+    && wget $ZLIB_LOCATION && tar -xvf zlib-1.2.11.tar.gz \
+    && cd zlib-1.2.11 \
+    && ./configure --prefix=$TOOLCHAIN_DIR --static \
+    && make && make install
+
+ENV PATH=$TOOLCHAIN_DIR/bin:$PATH
 
 ARG UPX_VERSION=4.2.4
 ARG UPX_ARCHIVE=upx-${UPX_VERSION}-amd64_linux.tar.xz
@@ -25,7 +41,7 @@ RUN microdnf -y install wget xz && \
 
 COPY --from=jar_builder $BUILD_DIR/target/oracle-sql-rearranger.jar $BUILD_DIR/
 COPY --from=jar_builder $BUILD_DIR/target/lib/ $BUILD_DIR/lib/
-RUN native-image --static --libc=musl -Os --module-path lib:oracle-sql-rearranger.jar --module kg/kg.Main -o native_binary_out
+RUN native-image --diagnostics-mode --verbose --target=linux-aarch64 -march=armv8-a --static --libc=glibc -Os --module-path lib:oracle-sql-rearranger.jar --module kg/kg.Main -o native_binary_out -H:+UnlockExperimentalVMOptions -H:-CheckToolchain
 RUN ls -al # size check
 RUN ./native_binary_out || true # test if runnable
 
