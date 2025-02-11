@@ -32,6 +32,8 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: jars
+      - name: test
+        run: tree
 #      - name: Log in to the Container registry
 #        uses: docker/login-action@v3
 #        with:
@@ -58,6 +60,8 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: jars
+      - name: test
+        run: tree
 #      - name: Log in to the Container registry
 #        uses: docker/login-action@v3
 #        with:
