@@ -10,7 +10,7 @@ WORKDIR $BUILD_DIR
 COPY . .
 RUN $M2_HOME/bin/mvn --batch-mode clean package
 # Build native image
-FROM ghcr.io/graalvm/native-image-community:${JAVA_VERSION}-muslib AS native_image_builder
+FROM ghcr.io/graalvm/native-image-community:${JAVA_VERSION} AS native_image_builder
 ARG BUILD_DIR
 WORKDIR $BUILD_DIR
 
@@ -24,7 +24,7 @@ RUN microdnf -y install wget xz && \
     rm -rf upx-${UPX_VERSION}-amd64_linux
 
 COPY --from=jar_builder $BUILD_DIR/target/oracle-sql-rearranger*.jar $BUILD_DIR/src.jar
-RUN native-image --static-nolibc -Os -jar src.jar -o native_binary_out
+RUN native-image -Os -jar src.jar -o native_binary_out
 RUN ls -al # size check
 RUN ./native_binary_out || true # test if runnable
 
