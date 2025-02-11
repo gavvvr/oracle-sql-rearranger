@@ -59,7 +59,7 @@ RUN ./app.upx || true # test if runnable
 RUN ls -al # size check
 
 #
-FROM gcr.io/distroless/java17-debian12:nonroot
+FROM busybox:glibc
 ARG BUILD_DIR
 COPY --from=native_image_builder_arm $BUILD_DIR/app.upx /app
 ENTRYPOINT ["/app"]
