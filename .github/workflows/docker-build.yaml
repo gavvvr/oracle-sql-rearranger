@@ -18,8 +18,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: jars
-          path:
-            target/*.jar
+          path: target/**/*.jar
   arm64-image:
     needs: build
     runs-on: ubuntu-22.04-arm
