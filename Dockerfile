@@ -25,7 +25,7 @@ RUN microdnf -y install wget xz && \
 
 COPY --from=jar_builder $BUILD_DIR/target/oracle-sql-rearranger.jar $BUILD_DIR/
 COPY --from=jar_builder $BUILD_DIR/target/lib/ $BUILD_DIR/lib/
-RUN native-image --static-nolibc -Os --module-path lib:oracle-sql-rearranger.jar --module kg/kg.Main -o native_binary_out
+RUN native-image --static --libc=musl -Os --module-path lib:oracle-sql-rearranger.jar --module kg/kg.Main -o native_binary_out
 RUN ls -al # size check
 RUN ./native_binary_out || true # test if runnable
 
