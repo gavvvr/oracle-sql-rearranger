@@ -24,7 +24,7 @@ RUN microdnf -y install wget xz && \
     rm -rf upx-${UPX_VERSION}-amd64_linux
 
 COPY --from=jar_builder $BUILD_DIR/target/oracle-sql-rearranger*.jar $BUILD_DIR/src.jar
-RUN native-image -Os -m oracle_sql_rearranger -jar src.jar -o native_binary_out
+RUN native-image -Os -m kg
 RUN ls -al # size check
 RUN ./native_binary_out || true # test if runnable
 
