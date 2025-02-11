@@ -13,7 +13,7 @@ jobs:
           java-version: 23
           distribution: temurin
       - name: Build with Maven
-        run: mvn --batch-mode package
+        run: mvn --batch-mode -ntp --color=always package
       - name: Upload jars
         uses: actions/upload-artifact@v4
         with:
