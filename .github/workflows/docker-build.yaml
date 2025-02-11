@@ -22,5 +22,5 @@ jobs:
           context: .
           file: Dockerfile
           platforms: linux/amd64
-          push: ${{ github.ref == 'refs/heads/main' }}
-          tags: ghcr.io/gavvvr/oracle-sql-rearranger:latest
+          push: true
+          tags: ghcr.io/gavvvr/oracle-sql-rearranger:test2
