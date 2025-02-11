@@ -19,7 +19,7 @@ jobs:
         with:
           name: jars
           path:
-            target/oracle-sql-rearranger.jar
+            target/*.jar
   arm64-image:
     needs: build
     runs-on: ubuntu-22.04-arm
