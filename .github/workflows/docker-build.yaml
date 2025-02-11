@@ -4,7 +4,7 @@ on: [push]
 
 jobs:
   package:
-    runs-on: macos-latest
+    runs-on: ubuntu-22.04-arm
     permissions:
       packages: write
 
