@@ -4,7 +4,7 @@ on: [push]
 
 jobs:
   package:
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-latest
     permissions:
       packages: write
 
