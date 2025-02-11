@@ -38,5 +38,5 @@ RUN ls -al # size check
 FROM scratch
 ARG BUILD_DIR
 COPY --from=native_image_builder $BUILD_DIR/app.upx /app
-RUN /app || true
+# RUN /app || true
 ENTRYPOINT ["/app"]
