@@ -9,30 +9,6 @@ ARG BUILD_DIR
 WORKDIR $BUILD_DIR
 COPY . .
 RUN $M2_HOME/bin/mvn --batch-mode clean package
-# Build native image
-FROM ghcr.io/graalvm/native-image-community:${JAVA_VERSION}-muslib AS native_image_builder
-ARG BUILD_DIR
-WORKDIR $BUILD_DIR
-
-ARG UPX_VERSION=4.2.4
-ARG UPX_ARCHIVE=upx-${UPX_VERSION}-amd64_linux.tar.xz
-RUN microdnf -y install wget xz && \
-    wget -q https://github.com/upx/upx/releases/download/v${UPX_VERSION}/${UPX_ARCHIVE} && \
-    tar -xJf ${UPX_ARCHIVE} && \
-    rm -rf ${UPX_ARCHIVE} && \
-    mv upx-${UPX_VERSION}-amd64_linux/upx . && \
-    rm -rf upx-${UPX_VERSION}-amd64_linux
-
-COPY --from=jar_builder $BUILD_DIR/target/oracle-sql-rearranger.jar $BUILD_DIR/
-COPY --from=jar_builder $BUILD_DIR/target/lib/ $BUILD_DIR/lib/
-RUN native-image --static --libc=musl -Os --module-path lib:oracle-sql-rearranger.jar --module kg/kg.Main -o native_binary_out
-RUN ls -al # size check
-RUN ./native_binary_out || true # test if runnable
-
-# Compress the executable with UPX
-RUN ./upx --lzma --best -o app.upx native_binary_out
-RUN ./app.upx || true # test if runnable
-RUN ls -al # size check
 
 FROM ghcr.io/graalvm/native-image-community:${JAVA_VERSION} AS native_image_builder_arm
 WORKDIR /build
