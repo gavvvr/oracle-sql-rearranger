@@ -30,22 +30,23 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: jars
+          path: target/
       - name: test
         run: tree
-#      - name: Log in to the Container registry
-#        uses: docker/login-action@v3
-#        with:
-#          registry: ghcr.io
-#          username: ${{ github.actor }}
-#          password: ${{ secrets.GITHUB_TOKEN }}
-#      - name: Build and push Docker image
-#        uses: docker/build-push-action@v6
-#        with:
-#          context: .
-#          file: Dockerfile
-#          platforms: linux/arm64
-#          push: true
-#          tags: ghcr.io/gavvvr/oracle-sql-rearranger:test2
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: Dockerfile
+          platforms: linux/arm64
+          push: true
+          tags: ghcr.io/gavvvr/oracle-sql-rearranger:test2
 
   amd64-image:
     needs: build
@@ -58,19 +59,20 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: jars
+          path: target/
       - name: test
         run: tree
-#      - name: Log in to the Container registry
-#        uses: docker/login-action@v3
-#        with:
-#          registry: ghcr.io
-#          username: ${{ github.actor }}
-#          password: ${{ secrets.GITHUB_TOKEN }}
-#      - name: Build and push Docker image
-#        uses: docker/build-push-action@v6
-#        with:
-#          context: .
-#          file: Dockerfile
-#          platforms: linux/amd64
-#          push: true
-#          tags: ghcr.io/gavvvr/oracle-sql-rearranger:test2
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: Dockerfile
+          platforms: linux/amd64
+          push: true
+          tags: ghcr.io/gavvvr/oracle-sql-rearranger:test2
