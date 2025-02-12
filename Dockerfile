@@ -1,4 +1,5 @@
 ARG TARGET_CPU_ARCH=$BUILDARCH # 'amd64' or 'arm64' expected
+ARG OBTAIN_COMPILED_JAR_FROM=jar_builder_stage # or 'docker_host'
 ARG JAVA_VERSION=23
 
 ARG BUILD_DIR=/build
@@ -31,11 +32,19 @@ RUN wget -q https://github.com/upx/upx/releases/download/v${UPX_VERSION}/${UPX_A
     rm -rf upx-${UPX_VERSION}-${TARGET_CPU_ARCH}_linux
 
 
-FROM scratch AS jar_collector_stage
+FROM scratch AS collect_jar_from_docker_host
+ARG BUILD_DIR
+WORKDIR $BUILD_DIR
+COPY target/oracle-sql-rearranger.jar .
+COPY target/lib/ lib/
+
+FROM scratch AS collect_jar_from_jar_builder_stage
 ARG BUILD_DIR
 WORKDIR $BUILD_DIR
 COPY --from=jar_builder $BUILD_DIR/target/oracle-sql-rearranger.jar $BUILD_DIR/.
 COPY --from=jar_builder $BUILD_DIR/target/lib/ $BUILD_DIR/lib/
+
+FROM collect_jar_from_${OBTAIN_COMPILED_JAR_FROM} AS jar_collector_stage
 
 
 FROM ghcr.io/graalvm/native-image-community:${JAVA_VERSION}-muslib AS linux_amd64_aot_builder
