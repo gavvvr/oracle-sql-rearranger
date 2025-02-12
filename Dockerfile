@@ -7,7 +7,8 @@ RUN mkdir -p $M2_HOME && wget -qO- https://dlcdn.apache.org/maven/maven-3/3.9.9/
 
 ARG BUILD_DIR
 WORKDIR $BUILD_DIR
-COPY . .
+COPY src/ src/
+COPY pom.xml .
 RUN $M2_HOME/bin/mvn --batch-mode clean package
 # Build native image
 FROM ghcr.io/graalvm/native-image-community:${JAVA_VERSION}-muslib AS native_image_builder
