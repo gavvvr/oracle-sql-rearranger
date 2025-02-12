@@ -3,7 +3,7 @@ name: Maven CI
 on: [push]
 
 jobs:
-  package:
+  amd64-image:
     runs-on: ubuntu-latest
     permissions:
       packages: write
@@ -22,5 +22,27 @@ jobs:
           context: .
           file: Dockerfile
           platforms: linux/amd64
+          push: ${{ github.ref == 'refs/heads/main' }}
+          tags: ghcr.io/gavvvr/oracle-sql-rearranger:latest
+
+  arm64-image:
+    runs-on: ubuntu-24.04-arm
+    permissions:
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: Dockerfile
+          platforms: linux/arm64
           push: ${{ github.ref == 'refs/heads/main' }}
           tags: ghcr.io/gavvvr/oracle-sql-rearranger:latest
