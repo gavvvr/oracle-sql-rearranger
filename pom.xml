@@ -18,6 +18,7 @@
   </properties>
 
   <build>
+    <finalName>oracle-sql-rearranger</finalName>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
