@@ -3,35 +3,13 @@ name: Maven CI
 on: [push]
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Set up JDK
-        uses: actions/setup-java@v4
-        with:
-          java-version: 23
-          distribution: temurin
-      - name: Build with Maven
-        run: mvn --batch-mode --no-transfer-progress --color=always package
-      - name: Upload jars
-        uses: actions/upload-artifact@v4
-        with:
-          name: jars
-          path: target/**/*.jar
   amd64-image:
-    needs: build
     runs-on: ubuntu-latest
     permissions:
       packages: write
 
     steps:
       - uses: actions/checkout@v4
-      - name: Download artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: jars
-          path: target/
       - name: Log in to the Container registry
         uses: docker/login-action@v3
         with:
@@ -43,24 +21,17 @@ jobs:
         with:
           context: .
           file: Dockerfile
-          build-args: OBTAIN_COMPILED_JAR_FROM=docker_host
           platforms: linux/amd64
           push: ${{ github.ref == 'refs/heads/main' }}
           tags: ghcr.io/gavvvr/oracle-sql-rearranger:latest
 
   arm64-image:
-    needs: build
     runs-on: ubuntu-24.04-arm
     permissions:
       packages: write
 
     steps:
       - uses: actions/checkout@v4
-      - name: Download artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: jars
-          path: target/
       - name: Log in to the Container registry
         uses: docker/login-action@v3
         with:
@@ -72,7 +43,6 @@ jobs:
         with:
           context: .
           file: Dockerfile
-          build-args: OBTAIN_COMPILED_JAR_FROM=docker_host
           platforms: linux/arm64
           push: ${{ github.ref == 'refs/heads/main' }}
           tags: ghcr.io/gavvvr/oracle-sql-rearranger:latest
