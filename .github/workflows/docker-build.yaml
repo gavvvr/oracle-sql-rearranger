@@ -5,46 +5,12 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        platform:
+          - linux/amd64
+          - linux/arm64
     steps:
-      - uses: actions/checkout@v4
-      - name: Set up JDK
-        uses: actions/setup-java@v4
-        with:
-          java-version: 23
-          distribution: temurin
-      - name: Build with Maven
-        run: mvn --batch-mode --no-transfer-progress --color=always package
-      - name: Upload jars
-        uses: actions/upload-artifact@v4
-        with:
-          name: jars
-          path: target/**/*.jar
-
-  arm64-image:
-    needs: build
-    runs-on: ubuntu-24.04-arm
-    permissions:
-      packages: write
-
-    steps:
-      - uses: actions/checkout@v4
-      - name: Download artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: jars
-          path: target/
-      - name: Log in to the Container registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          file: Dockerfile
-          build-args: OBTAIN_COMPILED_JAR_FROM=docker_host
-          platforms: linux/arm64
-          push: true
-          tags: ghcr.io/gavvvr/oracle-sql-rearranger:latest
+      - name: test
+        run: uname -m
