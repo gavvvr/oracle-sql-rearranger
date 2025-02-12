@@ -46,7 +46,7 @@ jobs:
           build-args: OBTAIN_COMPILED_JAR_FROM=docker_host
           platforms: linux/amd64
           push: ${{ github.ref == 'refs/heads/main' }}
-          tags: ghcr.io/gavvvr/oracle-sql-rearranger:latest
+          tags: ghcr.io/gavvvr/oracle-sql-rearranger:amd64_latest
 
   arm64-image:
     needs: build
@@ -75,4 +75,4 @@ jobs:
           build-args: OBTAIN_COMPILED_JAR_FROM=docker_host
           platforms: linux/arm64
           push: ${{ github.ref == 'refs/heads/main' }}
-          tags: ghcr.io/gavvvr/oracle-sql-rearranger:latest
+          tags: ghcr.io/gavvvr/oracle-sql-rearranger:arm64_latest
