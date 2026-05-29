@@ -1,7 +1,7 @@
 ARG TARGET_CPU_ARCH=$BUILDARCH # 'amd64' or 'arm64' expected
 ARG OBTAIN_COMPILED_JAR_FROM=jar_builder_stage # or 'docker_host'
 ARG JAVA_VERSION=25
-ARG MAVEN_VERSION=3.9.9
+ARG MAVEN_VERSION=3.9.16
 
 ARG BUILD_DIR=/build
 
