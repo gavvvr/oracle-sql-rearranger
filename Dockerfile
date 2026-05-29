@@ -1,6 +1,7 @@
 ARG TARGET_CPU_ARCH=$BUILDARCH # 'amd64' or 'arm64' expected
 ARG OBTAIN_COMPILED_JAR_FROM=jar_builder_stage # or 'docker_host'
 ARG JAVA_VERSION=25
+ARG MAVEN_VERSION=3.9.9
 
 ARG BUILD_DIR=/build
 
@@ -8,7 +9,7 @@ ARG BUILD_DIR=/build
 FROM bellsoft/liberica-openjdk-alpine:${JAVA_VERSION} AS jar_builder
 ENV M2_HOME=/opt/maven
 RUN mkdir -p $M2_HOME && \
-    wget -qO- https://dlcdn.apache.org/maven/maven-3/3.9.9/binaries/apache-maven-3.9.9-bin.tar.gz | \
+    wget -qO- https://dlcdn.apache.org/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz | \
     tar -xzvf - -C $M2_HOME --strip-components=1
 
 ARG BUILD_DIR
@@ -23,7 +24,7 @@ ARG TARGET_CPU_ARCH
 ARG BUILD_DIR
 WORKDIR $BUILD_DIR
 
-ARG UPX_VERSION=4.2.4
+ARG UPX_VERSION=5.1.1
 ARG UPX_ARCHIVE=upx-${UPX_VERSION}-${TARGET_CPU_ARCH}_linux.tar.xz
 RUN wget -q https://github.com/upx/upx/releases/download/v${UPX_VERSION}/${UPX_ARCHIVE} -O upx.tar.gz && \
     tar -xJf upx.tar.gz && \
