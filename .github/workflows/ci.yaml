@@ -8,6 +8,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
       - name: Set up JDK
         uses: actions/setup-java@v5
         with:
@@ -15,3 +17,10 @@ jobs:
           distribution: temurin
       - name: Build with Maven
         run: mvn --batch-mode --no-transfer-progress --color=always verify
+      - name: SonarQube Scan
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |-
+          mvn org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+            -Dsonar.organization=gavvvr \
+            -Dsonar.projectKey=gavvvr_oracle-sql-rearranger
