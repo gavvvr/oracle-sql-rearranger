@@ -28,4 +28,5 @@ jobs:
             -Dsonar.projectKey=gavvvr_oracle-sql-rearranger \
             -Dsonar.sources=. \
             -Dsonar.tests=. \
-            -Dsonar.test.inclusions=**/src/test/**/*
+            -Dsonar.test.inclusions=**/src/test/**/* \
+            -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
