@@ -23,4 +23,7 @@ jobs:
         run: |-
           mvn org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
             -Dsonar.organization=gavvvr \
-            -Dsonar.projectKey=gavvvr_oracle-sql-rearranger
+            -Dsonar.projectKey=gavvvr_oracle-sql-rearranger \
+            -Dsonar.sources=. \
+            -Dsonar.tests=. \
+            -Dsonar.test.inclusions=**/src/test/**/*
