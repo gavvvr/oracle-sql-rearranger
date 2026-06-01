@@ -8,9 +8,9 @@ ARG BUILD_DIR=/build
 
 FROM bellsoft/liberica-openjdk-alpine:${JAVA_VERSION} AS jar_builder
 ENV M2_HOME=/opt/maven
-RUN mkdir -p $M2_HOME && \
+RUN mkdir -p "$M2_HOME" && \
     wget -qO- https://dlcdn.apache.org/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz | \
-    tar -xzvf - -C $M2_HOME --strip-components=1
+    tar -xzvf - -C "$M2_HOME" --strip-components=1
 
 ARG BUILD_DIR
 WORKDIR $BUILD_DIR
